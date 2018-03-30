@@ -190,8 +190,8 @@ build first network
 
 |name|type|value|  
 |-------:|:-----:|:-------------------------------------|  
-|createChannel|||
-|joinChannel|||
+|createChannel|peer||
+|joinChannel|peer||
 
 3. Script
 
@@ -288,5 +288,96 @@ import [scripts/utils.sh](#scripts/utils.sh)
 
 # scripts/utils.sh
 
+## define
 
+1. Function
 
+|name|type|value|  
+|-------:|:-----:|:-------------------------------------|  
+|verifyResult|base||
+|setOrdererGlobals|base||
+|setGlobals|base||
+|updateAnchorPeers|peer||
+|joinChannelWithRetry|peer||
+|installChaincode|peer||
+|instantiateChaincode|peer||
+|upgradeChaincode|peer||
+|chaincodeQuery|peer||
+|fetchChannelConfig|peer||
+|signConfigtxAsPeerOrg|peer||
+|createConfigUpdate|file||
+|chaincodeInvoke|peer||
+
+## Function
+
+### verifyResult
+
+1. check last call ret != 0
+2. report failed
+
+### setOrdererGlobals
+
+1. set global values for order by static datas
+
+### setGlobals
+
+1. set global values for peer by peer org
+
+### updateAnchorPeers
+
+1. setGlobals
+2. peer channel update by anchors.tx
+
+### joinChannelWithRetry
+
+1. setGlobals
+2. peer channel join
+
+### installChaincode  
+
+1. setGlobals
+2. peer chaincode install
+
+### instantiateChaincode
+
+1. setGlobals
+2. peer chaincode instantiate
+
+### upgradeChaincode
+
+1. setGlobals
+2. peer chaincode upgrade
+
+### chaincodeQuery
+
+1. setGlobals
+2. peer chaincode query
+
+### fetchChannelConfig
+
+1. setOrdererGlobals
+2. peer channel fetch config
+
+### signConfigtxAsPeerOrg
+
+1. setGlobals
+2. peer channel signconfigtx
+
+### createConfigUpdate
+
+1. configtxlator proto_encode
+    1. original -> original_config.pb
+    2. modified -> modified_config.pb
+2. configtxlator compute_update
+    * channel_id, original_config.pb, modified_config.pb -> config_update.pb
+3. configtxlator proto_decode
+    * config_update.pb -> config_update.json
+4. write
+    * channel_id, config_update.json -> config_update_in_envelope.json
+5. configtxlator proto_encode
+    * config_update_in_envelope.json -> `result` files
+
+### chaincodeInvoke
+
+1. setGlobals
+2. peer chaincode invoke
